@@ -11,14 +11,13 @@ datasource db {
 model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   firstName String
-  lastName String
+  lastName String?
   email String? @unique
   isSubscribedToForecast Boolean? @default(false)
   foreCastSubscription Boolean? @default(false)
-  telegramAccountId String? @unique @db.ObjectId
-  telegramAccount TelegramAccount? @relation(fields: [telegramAccountId], references: [id])
-  discordAccountId String? @unique @db.ObjectId
-  discordAccount DiscordAccount? @relation(fields: [discordAccountId], references: [id])
+  telegramAccount TelegramAccount?
+  discordAccount DiscordAccount?
+
 }
 
 model TelegramAccount {
@@ -27,11 +26,9 @@ model TelegramAccount {
   lastName String?
   userName String
   telegramId String
-  messageCount Int @default(0)
   isBlocked Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user User?
+  userId String? @unique @db.ObjectId
+  user User? @relation(fields: [userId], references: [id])
 }
 
 model DiscordAccount {
@@ -43,18 +40,7 @@ model DiscordAccount {
   refreshToken String
   accessToken String
   tokenExpiration Int
-  user User?
+  userId String? @unique @db.ObjectId
+  user User? @relation(fields: [userId], references: [id])
 }
 
-model TelegramSession {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  sessionKey String @unique
-  data Json
-  expiresAt DateTime
-  telegramId String?
-  chatId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("telegram_sessions")
-}

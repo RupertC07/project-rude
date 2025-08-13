@@ -1,11 +1,11 @@
 import { handleStart } from '../handlers/handleStart';
-import { BotCommand } from './types';
+import { BotCommand, MyContext } from '../types';
 import { Telegraf, Markup } from 'telegraf';
 
 const startCommand: BotCommand = {
   name: 'start',
   description: 'Start the bot',
-  register: (bot: Telegraf) => {
+  register: (bot: Telegraf<MyContext>) => {
 
     bot.command('start', handleStart
     // bot.command('start', async (ctx) => {

@@ -21,7 +21,7 @@ export const update = async (id: string, data: Partial<DiscordAccount>) => {
 };
 
 export const getByDiscordId = async (discordId: string) => {
-  return prisma.discordAccount.findUnique({
+  return prisma.discordAccount.findFirst({
     where: { discordId },
   });
 };

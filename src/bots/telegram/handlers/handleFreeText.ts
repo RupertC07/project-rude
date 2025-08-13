@@ -1,7 +1,8 @@
 import { Context, Markup } from "telegraf";
 import { commands } from "../commands";
+import { MyContext } from "../types";
 
-export const handleFreeText = async (ctx: Context) => {
+export const handleFreeText = async (ctx: MyContext) => {
     
   const text = typeof ctx.message === 'object' && 'text' in ctx.message && typeof ctx.message.text === 'string'
     ? ctx.message.text

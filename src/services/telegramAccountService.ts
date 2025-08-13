@@ -21,8 +21,10 @@ export const update = async (id: string, data: Partial<TelegramAccount>) => {
 };
 
 export const getByTelegramId = async (telegramId: string) => {
-  return prisma.telegramAccount.findUnique({
-    where: { telegramId },
+  return prisma.telegramAccount.findFirst({
+    where: { 
+        telegramId:telegramId
+     },
   });
 };
 
