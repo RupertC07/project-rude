@@ -1,4 +1,5 @@
 import { Context, Markup } from "telegraf";
+import { MyContext } from "../types";
 
 const freshConfig = {
   message: `👋 Yo\\! Welcome welcome\\! I’m *Rude* — say it like *RUU\\-DE*, not rude rude 😎
@@ -58,7 +59,7 @@ I missed you already 🥹`,
 };
 
 
-export const handleStart = async (ctx: Context) => {
+export const handleStart = async (ctx: MyContext) => {
   const config = freshConfig
 
   const inlineKeyboard = Markup.inlineKeyboard(

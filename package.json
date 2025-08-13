@@ -12,11 +12,13 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.14.0",
+    "@telegraf/session": "^2.0.0-beta.7",
     "axios": "^1.11.0",
     "cors": "^2.8.5",
     "discord-oauth2": "^2.12.1",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "install": "^0.13.0",
     "jsdoc": "^4.0.4",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.18.0",
