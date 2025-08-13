@@ -1,11 +1,15 @@
 
 import "dotenv/config";
+import { url } from "inspector";
 
 const config = {
   app: {
     port: process.env.PORT || 8000,
     env: process.env.NODE_ENV,
-    log_level: process.env.LOG_LEVEL
+    log_level: process.env.LOG_LEVEL,
+    url: process.env.TUNNEL_MODE && process.env.TUNNEL_MODE == "True"? 
+    process.env.PORT_FORWARD_URL : process.env.HOST_URL
+
     
   },
   discord: {

@@ -7,6 +7,11 @@ import * as TelegramAccountService from "../../../services/telegramAccountServic
 export const handleSession = async (ctx: MyContext, next: () => Promise<void>) =>{
 
 
+    logger.info("SESSION:", ctx.session)
+
+     const sessionId = (ctx.session as any).__id || (ctx.session as any)._id;
+    console.log("MongoDB Session ID:", sessionId);
+
   if (ctx.session.lastActivity) {
     const lastActivity = new Date(ctx.session.lastActivity);
     const now = new Date();
@@ -14,7 +19,7 @@ export const handleSession = async (ctx: MyContext, next: () => Promise<void>) =
     const diffMinutes = diffMs / 1000 / 60;
 
     if (diffMinutes > 3) {
-      console.log('More than 3 minutes have passed');
+      console.log('More than 3 minutes have passed. Restarting Session');
       ctx.session.user = null
     } else {
       console.log(`Only ${diffMinutes.toFixed(1)} minutes passed`);
@@ -32,7 +37,7 @@ export const handleSession = async (ctx: MyContext, next: () => Promise<void>) =
       const user = await UserService.getByTgId(tgId)
 
       if (!user) {
-        logger.info("CRETE USER HERE")
+        
 
         const userData: Omit<User, "id"> = {
              email : null,
@@ -57,8 +62,13 @@ export const handleSession = async (ctx: MyContext, next: () => Promise<void>) =
 
         ctx.session.user = await UserService.getById(newUser.id as string)
       }
+      else{
+        ctx.session.user = user
+      }
 
-      ctx.session.user = user
+      
+
+      console.log("User", ctx.session.user )
 
     }
 

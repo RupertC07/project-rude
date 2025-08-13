@@ -37,10 +37,16 @@ model DiscordAccount {
   globalName String
   avatar String?
   discordId String
-  refreshToken String
-  accessToken String
-  tokenExpiration Int
+  refreshToken String?
+  accessToken String?
+  tokenExpiration Int?
   userId String? @unique @db.ObjectId
   user User? @relation(fields: [userId], references: [id])
 }
 
+
+model TgSession{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  key String
+  session Json
+}

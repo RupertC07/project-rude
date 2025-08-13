@@ -25,6 +25,10 @@ export const update = async (id: string, data: Partial<User>) => {
   return prisma.user.update({
     where: { id },
     data,
+    include:{
+        discordAccount:true,
+        telegramAccount:true
+    }
   });
 };
 
