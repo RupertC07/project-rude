@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName             String
+  lastName              String
+  email                 String?  @unique
+  isSubscribedToForecast Boolean @default(false)
+  foreCastSubscription   Boolean @default(false)
+
+  telegramAccountId     String?  @unique @db.ObjectId
+  telegramAccount       TelegramAccount? @relation(fields: [telegramAccountId], references: [id])
+
+  discordAccountId      String?  @unique @db.ObjectId
+  discordAccount        DiscordAccount?  @relation(fields: [discordAccountId], references: [id])
+}
+
+model TelegramAccount {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  firstName  String
+  lastName   String?
+  userName   String
+  telegramId String
+
+  user       User?
+}
+
+model DiscordAccount {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  userName       String
+  globalName     String
+  avatar         String?
+  discordId      String
+  refreshToken   String
+  accessToken    String
+  tokenExpiration Int
+
+  user           User?
+}

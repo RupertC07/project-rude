@@ -1,0 +1,5 @@
+node_modules
+.env
+logs
+setup.sh
+/generated/prisma
