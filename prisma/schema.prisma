@@ -1,47 +1,60 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output = "../generated/prisma"
 }
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
 }
 
 model User {
-  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
-  firstName             String
-  lastName              String
-  email                 String?  @unique
-  isSubscribedToForecast Boolean @default(false)
-  foreCastSubscription   Boolean @default(false)
-
-  telegramAccountId     String?  @unique @db.ObjectId
-  telegramAccount       TelegramAccount? @relation(fields: [telegramAccountId], references: [id])
-
-  discordAccountId      String?  @unique @db.ObjectId
-  discordAccount        DiscordAccount?  @relation(fields: [discordAccountId], references: [id])
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  firstName String
+  lastName String
+  email String? @unique
+  isSubscribedToForecast Boolean? @default(false)
+  foreCastSubscription Boolean? @default(false)
+  telegramAccountId String? @unique @db.ObjectId
+  telegramAccount TelegramAccount? @relation(fields: [telegramAccountId], references: [id])
+  discordAccountId String? @unique @db.ObjectId
+  discordAccount DiscordAccount? @relation(fields: [discordAccountId], references: [id])
 }
 
 model TelegramAccount {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
-  firstName  String
-  lastName   String?
-  userName   String
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  firstName String
+  lastName String?
+  userName String
   telegramId String
-
-  user       User?
+  messageCount Int @default(0)
+  isBlocked Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User?
 }
 
 model DiscordAccount {
-  id             String  @id @default(auto()) @map("_id") @db.ObjectId
-  userName       String
-  globalName     String
-  avatar         String?
-  discordId      String
-  refreshToken   String
-  accessToken    String
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userName String
+  globalName String
+  avatar String?
+  discordId String
+  refreshToken String
+  accessToken String
   tokenExpiration Int
+  user User?
+}
 
-  user           User?
+model TelegramSession {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  sessionKey String @unique
+  data Json
+  expiresAt DateTime
+  telegramId String?
+  chatId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("telegram_sessions")
 }
