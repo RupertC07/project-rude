@@ -1,5 +1,6 @@
 import { handleStart } from '../handlers/handleStart';
 import { handleSubscribe } from '../handlers/handleSubscribe';
+import { handleUnsubscribe } from '../handlers/handleUnSubscribe';
 import { BotCommand, MyContext } from '../types';
 import { Telegraf, Markup } from 'telegraf';
 
@@ -12,7 +13,8 @@ const startCommand: BotCommand = {
    
     
     ),
-    bot.action("TRIGGER_SUBSCRIBE", handleSubscribe)
+    bot.action("TRIGGER_SUBSCRIBE", handleSubscribe),
+    bot.action("TRIGGER_UNSUBSCRIBE", handleUnsubscribe )
 
   },
 };

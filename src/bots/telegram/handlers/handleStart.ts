@@ -20,7 +20,8 @@ I base my forecasts on Binance data — so it’s better if you use Binance too\
 What do you want to do next\\?
 👇 Choose an option below:`,
   buttons: [
-    [{ type: 'url', label: '✅ Subscribe to Forecasts', value: `${url}auth/discord/?state=${jwt}&platform=telegram` }],
+    !ctx.session.user?.discordAccount ? [{ type: 'url', label: '✅ Subscribe to Forecasts', value: `${url}auth/discord/?state=${jwt}&platform=telegram` }]:
+    [{ type: 'callback', label: '✅ Subscribe to Forecasts', value: 'TRIGGER_SUBSCRIBE' }],
     [{ type: 'url', label: '👥 Join Our Community', value: 'https://discord.gg/ht7ynewgrs' }]
   ]
 };
@@ -34,7 +35,7 @@ Hang tight — I’ll let you know once you're eligible 🤞
 You can cancel your request below\\.  
 *Please don't though* 🙏 \\(You know I care\\!\\)`,
   buttons: [
-    [{ type: 'callback', label: '🚫 Cancel Request', value: 'TRIGGER_CANCEL_REQUEST' }],
+    [{ type: 'callback', label: '🚫 Cancel Request', value: 'TRIGGER_UNSUBSCRIBE' }],
     [{ type: 'url', label: '👥 Join Our Community', value: 'https://discord.gg/ht7ynewgrs' }]
   ]
 };
@@ -62,7 +63,7 @@ But hey\\.\\.\\. I’m still here\\.\\.\\. waiting 👀
 Go hit that *Re\\-Subscribe* button \\—  
 I missed you already 🥹`,
   buttons: [
-    [{ type: 'callback', label: '🔁 Re-Subscribe', value: 'TRIGGER_RESUBSCRIBE' }],
+    [{ type: 'callback', label: '🔁 Re-Subscribe', value: 'TRIGGER_SUBSCRIBE' }],
     [{ type: 'url', label: '👥 Join Our Community', value: 'https://discord.gg/ht7ynewgrs' }]
   ]
 };

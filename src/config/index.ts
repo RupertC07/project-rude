@@ -27,6 +27,13 @@ const config = {
         `${process.env.PORT_FORWARD_URL}telegram/webhook` :
         `${process.env.HOST_URL}telegram/webhook` ,
   },
+  perplexity:{
+    api_key: process.env.PERPLEXITY_API_KEY
+  },
+  binance:{
+    api: process.env.BINANCE_API,
+    interval: process.env.BINANCE_INTERVAL
+  },
   db: {
     type: process.env.DATBASE_TYPE || "mongodb",
     url: process.env.DATABASE_URL,

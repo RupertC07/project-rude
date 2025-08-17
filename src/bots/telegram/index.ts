@@ -53,6 +53,7 @@ bot.on('message', async (ctx, next) => {
 
 
   if (config.app.env === "development") {
+    logger.info('CTX', ctx)
     logger.info('Received message:', ctx.message);
     logger.info('Session data:', ctx.session);
   }

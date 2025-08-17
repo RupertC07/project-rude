@@ -50,3 +50,10 @@ model TgSession{
   key String
   session Json
 }
+
+model exchange{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  symbol String
+  description String
+}

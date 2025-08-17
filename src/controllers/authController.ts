@@ -23,7 +23,6 @@ export const discordAuth = async (req: Request, res: Response) => {
 
     const payload = helper.verify(state as string) as { telegramId?: string, platform?: string };
 
-    console.log(payload)
     if (payload.telegramId && payload.platform == "telegram") {
 
         const user = await UserService.getByTgId(payload.telegramId as string)
