@@ -1,5 +1,14 @@
 import { Context, Markup } from "telegraf";
 import { MyContext } from "../types";
+import { helper as JWT } from "../../../config/jwt";
+import config from "../../../config";
+
+
+export const handleStart = async (ctx: MyContext) => {
+
+
+  const url = config.app.url
+  const jwt = JWT.sign({telegramId: ctx.session.user?.telegramAccount?.telegramId, platform:"telegram",  userId: ctx.session.user?.id})
 
 const freshConfig = {
   message: `👋 Yo\\! Welcome welcome\\! I’m *Rude* — say it like *RUU\\-DE*, not rude rude 😎
@@ -11,6 +20,7 @@ I base my forecasts on Binance data — so it’s better if you use Binance too\
 What do you want to do next\\?
 👇 Choose an option below:`,
   buttons: [
+    !ctx.session.user?.discordAccount ? [{ type: 'url', label: '✅ Subscribe to Forecasts', value: `${url}auth/discord/?state=${jwt}&platform=telegram` }]:
     [{ type: 'callback', label: '✅ Subscribe to Forecasts', value: 'TRIGGER_SUBSCRIBE' }],
     [{ type: 'url', label: '👥 Join Our Community', value: 'https://discord.gg/ht7ynewgrs' }]
   ]
@@ -25,7 +35,7 @@ Hang tight — I’ll let you know once you're eligible 🤞
 You can cancel your request below\\.  
 *Please don't though* 🙏 \\(You know I care\\!\\)`,
   buttons: [
-    [{ type: 'callback', label: '🚫 Cancel Request', value: 'TRIGGER_CANCEL_REQUEST' }],
+    [{ type: 'callback', label: '🚫 Cancel Request', value: 'TRIGGER_UNSUBSCRIBE' }],
     [{ type: 'url', label: '👥 Join Our Community', value: 'https://discord.gg/ht7ynewgrs' }]
   ]
 };
@@ -53,17 +63,33 @@ But hey\\.\\.\\. I’m still here\\.\\.\\. waiting 👀
 Go hit that *Re\\-Subscribe* button \\—  
 I missed you already 🥹`,
   buttons: [
-    [{ type: 'callback', label: '🔁 Re-Subscribe', value: 'TRIGGER_RESUBSCRIBE' }],
+    [{ type: 'callback', label: '🔁 Re-Subscribe', value: 'TRIGGER_SUBSCRIBE' }],
     [{ type: 'url', label: '👥 Join Our Community', value: 'https://discord.gg/ht7ynewgrs' }]
   ]
 };
 
 
-export const handleStart = async (ctx: MyContext) => {
-  const config = freshConfig
+ 
+
+
+  let configMarkUp = freshConfig
+
+  if (ctx.session.user?.isSubscribedToForecast &&  !ctx.session.user?.foreCastSubscription) {
+    configMarkUp = notYetAllowedConfig
+  }
+
+  if (ctx.session.user?.isSubscribedToForecast && ctx.session.user?.foreCastSubscription ) {
+    configMarkUp = subscribedConfig
+  }
+
+  if(!ctx.session.user?.isSubscribedToForecast && ctx.session.user?.foreCastSubscription){
+    configMarkUp = unsubscribedConfig
+  }
+
+
 
   const inlineKeyboard = Markup.inlineKeyboard(
-    config.buttons.map(row =>
+    configMarkUp.buttons.map(row =>
       row.map(btn =>
         btn.type === 'callback'
           ? Markup.button.callback(btn.label, btn.value)
@@ -72,5 +98,5 @@ export const handleStart = async (ctx: MyContext) => {
     )
   );
 
-  await ctx.replyWithMarkdownV2(config.message, inlineKeyboard);
+  await ctx.replyWithMarkdownV2(configMarkUp.message, inlineKeyboard);
 };

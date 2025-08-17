@@ -1,11 +1,15 @@
 
 import "dotenv/config";
+import { url } from "inspector";
 
 const config = {
   app: {
     port: process.env.PORT || 8000,
     env: process.env.NODE_ENV,
-    log_level: process.env.LOG_LEVEL
+    log_level: process.env.LOG_LEVEL,
+    url: process.env.TUNNEL_MODE && process.env.TUNNEL_MODE == "True"? 
+    process.env.PORT_FORWARD_URL : process.env.HOST_URL
+
     
   },
   discord: {
@@ -22,6 +26,13 @@ const config = {
         webhook_url: process.env.TUNNEL_MODE && process.env.TUNNEL_MODE == "True" ?
         `${process.env.PORT_FORWARD_URL}telegram/webhook` :
         `${process.env.HOST_URL}telegram/webhook` ,
+  },
+  perplexity:{
+    api_key: process.env.PERPLEXITY_API_KEY
+  },
+  binance:{
+    api: process.env.BINANCE_API,
+    interval: process.env.BINANCE_INTERVAL
   },
   db: {
     type: process.env.DATBASE_TYPE || "mongodb",

@@ -18,11 +18,17 @@ export const bot = new Telegraf<MyContext>(token);
 
 const store = Mongo<SessionData>({
   url: config.db.url as string,
-  collection: 'tgsession',
+  collection: 'TgSession',
 });
 
 bot.use(session({
   store,
+  getSessionKey: (ctx) => {
+        if (ctx.from && ctx.chat) {
+          return `${ctx.from.id}:${ctx.chat.id}`;
+        }
+        return ""; 
+      },
   defaultSession: (): SessionData => ({
     lastActivity: new Date(),
     user: null
@@ -47,6 +53,7 @@ bot.on('message', async (ctx, next) => {
 
 
   if (config.app.env === "development") {
+    logger.info('CTX', ctx)
     logger.info('Received message:', ctx.message);
     logger.info('Session data:', ctx.session);
   }
